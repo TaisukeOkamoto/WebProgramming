@@ -1,0 +1,36 @@
+@import "reset.scss";
+header {
+  background: #484848;
+  .user_area span {
+    &:nth-child(1) {
+      color: #fff;
+    }
+    &:nth-child(2) {
+      color: red;
+      text-decoration: underline;
+    }
+  }
+}
+.main_ttl {
+  padding: 30px 0 0 0;
+  font-size: 18px;
+  font-weight: bold;
+    h1 {
+      text-align: center;
+    }
+}
+form {
+  .submit {
+    text-align: center;
+  }
+  text-align: center;
+  dl {
+    display: inline-block;
+    dt {
+      float: left;
+    }
+    dd {
+      padding: 0 0 10px 120px;
+    }
+  }
+}
