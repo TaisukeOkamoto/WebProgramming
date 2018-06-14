@@ -36,15 +36,22 @@ table {
   border-spacing: 0; }
 
 header {
+  padding: 10px 0;
   background: #484848; }
-  header .user_area span:nth-child(1) {
-    color: #fff; }
-  header .user_area span:nth-child(2) {
-    color: red;
-    text-decoration: underline; }
+  header .user_area {
+    text-align: right; }
+    header .user_area span {
+      display: inline-block; }
+      header .user_area span a:nth-child(1) {
+        display: inline-block;
+        padding: 0 10px 0 0;
+        color: #fff; }
+      header .user_area span a:nth-child(2) {
+        color: red;
+        text-decoration: underline; }
 
 .main_ttl {
-  padding: 30px 0 0 0;
+  padding: 30px 0;
   font-size: 18px;
   font-weight: bold; }
   .main_ttl h1 {
@@ -53,12 +60,64 @@ header {
 form {
   text-align: center; }
   form .submit {
+    padding: 30px 0;
     text-align: center; }
   form dl {
     display: inline-block; }
     form dl dt {
       float: left; }
     form dl dd {
-      padding: 0 0 10px 120px; }
+      padding: 0 0 10px 150px; }
+
+.new_register {
+  text-align: right;
+  padding: 0 0 20px 0; }
+
+.usertable {
+  padding: 30px 0 0 0;
+  overflow-y: scroll; }
+  .usertable table {
+    width: 960px; }
+    .usertable table th {
+      background: #484848;
+      color: #fff;
+      padding: 10px;
+      border-left: 1px solid #fff; }
+      .usertable table th:first-child {
+        border-left: 1px solid #484848; }
+      .usertable table th:last-child {
+        border-right: 1px solid #484848; }
+    .usertable table td {
+      padding: 10px;
+      border-left: 1px solid #484848;
+      border-bottom: 1px solid #484848; }
+      .usertable table td .edit {
+        display: inline-block; }
+      .usertable table td .detail {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        padding: 3px 20px;
+        color: #fff;
+        background: #1559ec; }
+      .usertable table td .update {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        padding: 3px 20px;
+        color: #fff;
+        background: #1eec16; }
+      .usertable table td .delete {
+        display: inline-block;
+        margin: 0 0 0 10px;
+        padding: 3px 20px;
+        color: #fff;
+        background: #ec1717; }
+      .usertable table td:last-child {
+        text-align: center;
+        border-right: 1px solid #484848; }
+
+@media screen and (min-width: 961px) {
+  .page_body {
+    width: 960px;
+    margin: 0 auto; } }
 
 /*# sourceMappingURL=style.css.map */

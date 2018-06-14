@@ -1,18 +1,34 @@
 @import "reset.scss";
+
+$colorGray: #484848;
+$colorBlue: #1559ec;
+$colorGreen: #1eec16;
+$colorRed: #ec1717;
+$pcContainerWidth: 960px;
+
 header {
-  background: #484848;
-  .user_area span {
-    &:nth-child(1) {
-      color: #fff;
-    }
-    &:nth-child(2) {
-      color: red;
-      text-decoration: underline;
+  padding: 10px 0;
+  background: $colorGray;
+  .user_area {
+    text-align: right;
+      span{
+      display: inline-block;
+       a {
+        &:nth-child(1) {
+          display: inline-block;
+          padding: 0 10px 0 0;
+          color: #fff;
+        }
+        &:nth-child(2) {
+          color: red;
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
 .main_ttl {
-  padding: 30px 0 0 0;
+  padding: 30px 0;
   font-size: 18px;
   font-weight: bold;
     h1 {
@@ -21,6 +37,7 @@ header {
 }
 form {
   .submit {
+    padding: 30px 0;
     text-align: center;
   }
   text-align: center;
@@ -30,7 +47,69 @@ form {
       float: left;
     }
     dd {
-      padding: 0 0 10px 120px;
+      padding: 0 0 10px 150px;
     }
+  }
+}
+.new_register {
+  text-align: right;
+  padding: 0 0 20px 0;
+}
+.usertable {
+  padding: 30px 0 0 0;
+  overflow-y: scroll;
+  table {
+    width: 960px;
+    th {
+      background: $colorGray;
+      color: #fff;
+      padding: 10px;
+      border-left: 1px solid #fff;
+      &:first-child {
+        border-left: 1px solid $colorGray;
+      }
+      &:last-child {
+      border-right: 1px solid $colorGray;
+      }
+    }
+    td {
+      padding: 10px;
+      border-left: 1px solid $colorGray;
+      border-bottom: 1px solid $colorGray;
+      .edit {
+        display: inline-block;
+      }
+      .detail {
+      display: inline-block;
+      margin: 0 0 0 10px;
+      padding: 3px 20px;
+      color: #fff;
+      background: $colorBlue;
+      }
+      .update {
+      display: inline-block;
+      margin: 0 0 0 10px;
+      padding: 3px 20px;
+      color: #fff;
+      background: $colorGreen;
+      }
+      .delete {
+      display: inline-block;
+      margin: 0 0 0 10px;
+      padding: 3px 20px;
+      color: #fff;
+      background: $colorRed;
+      }
+      &:last-child {
+        text-align: center;
+        border-right: 1px solid $colorGray;
+      }
+    }
+  }
+}
+@media screen and (min-width: $pcContainerWidth + 1){
+  .page_body {
+    width: $pcContainerWidth;
+    margin: 0 auto;
   }
 }
