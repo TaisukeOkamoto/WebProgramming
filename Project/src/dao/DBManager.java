@@ -6,23 +6,19 @@ import java.sql.SQLException;
 
 public class DBManager {
 
-	private static String url = "jdbc:mysql://localhost/sampledb?useUnicode=true&characterEncoding=utf8&serverTimezone=JST";
-	private static String user = "root";
-	private static String pass = "password";
+	private static String URL = "jdbc:mysql://localhost/sampledb?useUnicode=true&characterEncoding=utf8&serverTimezone=JST";
+	private static String USER = "root";
+	private static String PASSWORD = "password";
 
 	public static Connection getConnection() {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection(url, user, pass);
-		} catch (SQLException | ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
+			con = DriverManager.getConnection(URL, USER, PASSWORD);
+		} catch(SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return con;
 	}
-
-
-
 
 }
