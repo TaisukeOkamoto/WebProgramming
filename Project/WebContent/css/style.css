@@ -148,6 +148,11 @@ form {
   .submit input.ok {
     margin: 0 0 0 30px; }
 
+.errMsg {
+	margin: 0 0 20px 0;
+	text-align:center;
+	color:red;
+}
 @media screen and (min-width: 961px) {
   .page_body {
     width: 960px;

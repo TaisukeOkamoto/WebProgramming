@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -11,7 +12,7 @@
   <header>
     <div class="page_body">
       <div class="user_area">
-        <span><a>●●●●さん</a><a>ログアウト</a></span>
+        <span><a>${userInfo.name}さん</a><a href="LoginServlet">ログアウト</a></span>
       </div>
     </div>
   </header>
@@ -35,42 +36,22 @@
       <div class="page_body">
         <table>
           <tr><th>ログインID</th><th>ユーザ名</th><th>生年月日</th><th></th></tr>
+          <c:forEach var="user" items="${userList}">
+          <c:if test="${!user.loginId.equals('admin')}">
           <tr>
-            <td>id0001</td>
-            <td>田中太郎</td>
-            <td>1989年04月26日</td>
+            <td>${user.loginId}</td>
+            <td>${user.name}</td>
+            <td>${user.birth_date}</td>
             <td>
               <span class="edit">
-                <a class="detail">詳細</a>
+                <a class="detail" href="UserDetailServlet?id=${user.id}">詳細</a>
                 <a class="update">更新</a>
                 <a class="delete">削除</a>
               </span>
             </td>
           </tr>
-          <tr>
-            <td>id0001</td>
-            <td>田中太郎</td>
-            <td>1989年04月26日</td>
-            <td>
-              <span class="edit">
-                <a class="detail">詳細</a>
-                <a class="update">更新</a>
-                <a class="delete">削除</a>
-              </span>
-            </td>
-          </tr>
-          <tr>
-            <td>id0001</td>
-            <td>田中太郎</td>
-            <td>1989年04月26日</td>
-            <td>
-              <span class="edit">
-                <a class="detail">詳細</a>
-                <a class="update">更新</a>
-                <a class="delete">削除</a>
-              </span>
-            </td>
-          </tr>
+          </c:if>
+          </c:forEach>
         </table>
       </div>
     </div>

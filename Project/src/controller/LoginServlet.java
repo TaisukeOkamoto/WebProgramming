@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		User user = userDao.findByLoginInfo(loginId,password);
 
 		if(user == null) {
-			request.setAttribute("errMsg","ログインに失敗しました");
+			request.setAttribute("errMsg","ログインIDまたはパスワードが異なります");
 
 			RequestDispatcher Dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_login.jsp");
 			Dispatcher.forward(request, response);

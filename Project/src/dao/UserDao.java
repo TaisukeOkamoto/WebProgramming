@@ -86,4 +86,19 @@ public class UserDao {
 		return userList;
 	}
 
+	public User findByUserInfo(int id) {
+		Connection conn = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM user WHERE id = ?";
+
+			PreparedStatement pStmt = conn.prepeareStemtment(sql);
+			pStmt.setString(1, "id");
+			ResultSet rs = pStmt.executeQuery();
+		}
+
+	}
+
 }
