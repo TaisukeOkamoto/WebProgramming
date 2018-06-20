@@ -16,6 +16,16 @@ public class User {
 		this.loginId = loginId;
 		this.name = name;
 	}
+
+	//ユーザ情報詳細をコンストラクタに保存
+	public User(String loginId,String name,Date birth_date,String create_date,String update_date) {
+		this.loginId = loginId;
+		this.name = name;
+		this.birth_date = birth_date;
+		this.create_date = create_date;
+		this.update_date = update_date;
+	}
+
 	//全てのデータをコンストラクタに保存
 	public User(int id,String loginId,String name,Date birth_date,String password,String create_date,String update_date) {
 		this.id = id;

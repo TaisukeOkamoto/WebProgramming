@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -12,14 +12,14 @@
   <header>
     <div class="page_body">
       <div class="user_area">
-        <span><a>${userInfo.name}さん</a><a href="LoginServlet">ログアウト</a></span>
+        <span><a>${userInfo.name}さん</a><a href="LogoutServlet">ログアウト</a></span>
       </div>
     </div>
   </header>
   <div class="main_ttl"><h1>ユーザ一覧</h1></div>
   <div class="container">
     <div class="page_body">
-      <div class="new_register"><a href="">新規登録</a></div>
+      <div class="new_register"><a href="UserRegistrationServlet">新規登録</a></div>
     </div>
   <form class="loginform form" action="index.html" method="post">
     <div class="form_info_wrap">
