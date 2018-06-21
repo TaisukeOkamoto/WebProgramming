@@ -21,13 +21,14 @@
     <div class="page_body">
       <div class="new_register"><a href="UserRegistrationServlet">新規登録</a></div>
     </div>
-  <form class="loginform form" action="index.html" method="post">
+  <form class="loginform form" action="UserListServlet" method="post">
     <div class="form_info_wrap">
       <dl>
-        <dt>ログインID</dt><dd class="id"><input name="id" type="text" size="30"></dd>
-        <dt>ユーザー名</dt><dd class="user"><input name="user" type="text" size="30"></dd>
-        <dt>生年月日</dt><dd class="birthyear"><input name="birthyear" type="text" size="12">&nbsp;～&nbsp;<input name="birthyear" type="text" size="12"></dd>
+        <dt>ログインID</dt><dd class="id"><input name="inputId" type="text" size="30"></dd>
+        <dt>ユーザー名</dt><dd class="user"><input name="inputName" type="text" size="30"></dd>
+        <dt>生年月日</dt><dd class="birthyear"><input name="birthDateFrom" type="text" maxlength="10" size="12" placeholder="年/日/月">&nbsp;～&nbsp;<input name="birthDateTo" type="text" maxlength="10" size="12" placeholder="年/日/月"></dd>
       </dl>
+      <p class="errMsg">${inputDateErrMessage}</p>
       <div class="submit"><input type="submit" value="検索"></div>
     </div>
   </form>
@@ -45,8 +46,12 @@
             <td>
               <span class="edit">
                 <a class="detail" href="UserDetailServlet?id=${user.id}">詳細</a>
-                <a class="update">更新</a>
+                <c:if test="${userInfo.loginId.equals(user.loginId) || userInfo.loginId.equals('admin')}">
+                <a class="update" href="UserUpdateServlet?id=${user.id}">更新</a>
+                </c:if>
+                <c:if test="${userInfo.loginId.equals('admin')}">
                 <a class="delete">削除</a>
+                </c:if>
               </span>
             </td>
           </tr>

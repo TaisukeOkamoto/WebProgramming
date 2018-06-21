@@ -1,14 +1,19 @@
 package dao;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
 
 import model.User;
 
@@ -131,23 +136,32 @@ public class UserDao {
 		try {
 			conn = DBManager.getConnection();
 
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-ss HH:mm:ss");
-			String now = sdf.format(new Date());
-
-			java.sql.Date sqlNow = new java.sql.Date(now.getTime());
-
 			String sql = "INSERT INTO user(login_id,password,name,birth_date,create_date,update_date) VALUES(?,?,?,?,?,?)";
+
+			Date now = new Date();
+			java.sql.Timestamp sqlNow = new java.sql.Timestamp(now.getTime());
+
+			//ハッシュ生成前にバイト配列に置き換える際のCharset
+			Charset charset = StandardCharsets.UTF_8;
+			//ハッシュアルゴリズム
+			String algorithm = "MD5";
+
+			//ハッシュ生成処理
+			byte[] bytes;
+
+			bytes = MessageDigest.getInstance(algorithm).digest(password.getBytes(charset));
+			String encryptedPassword = DatatypeConverter.printHexBinary(bytes);
 
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, loginId);
-			pStmt.setString(2, password);
+			pStmt.setString(2, encryptedPassword);
 			pStmt.setString(3, name);
 			java.sql.Date sqlBirthDate = new java.sql.Date(birthDate.getTime());
 			pStmt.setDate(4, sqlBirthDate);
-			pStmt.setDate(5, sqlNow);
-			pStmt.setDate(6, sqlNow);
-			int rs = pStmt.executeUpdate();
-		} catch (SQLException e) {
+			pStmt.setTimestamp(5, sqlNow);
+			pStmt.setTimestamp(6, sqlNow);
+			pStmt.executeUpdate();
+		} catch (SQLException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			return;
 		} finally {
@@ -158,6 +172,134 @@ public class UserDao {
 					e.printStackTrace();
 					return;
 				}
+			}
+		}
+	}
+
+	public Boolean userCheck(String loginId) {
+		Connection conn = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT login_id FROM user WHERE login_id = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+
+			pStmt.setString(1,loginId);
+
+			ResultSet rs = pStmt.executeQuery();
+
+			if(!rs.next()) {
+				return false;
+			}
+			String loginData;
+			loginData = rs.getString("login_id");
+
+			if(loginData != null) {
+				return true;
+			}
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch(SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	//検索結果を取得
+	public List<User> searchUser(String inputId,String inputName,Date birthDateFrom,Date birthDateTo){
+		Connection conn = null;
+		List<User> userList = new ArrayList<User>();
+		try {
+			conn = DBManager.getConnection();
+			String sql = "SELECT * FROM user WHERE login_id = ? OR name like ? OR birth_date BETWEEN ? AND ?";
+
+			java.sql.Date birthDateFromSql = new java.sql.Date(birthDateFrom.getTime());
+			java.sql.Date birthDateToSql = new java.sql.Date(birthDateTo.getTime());
+
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, inputId);
+			pStmt.setString(2, "%" +inputName+ "%");
+			pStmt.setDate(3, birthDateFromSql);
+			pStmt.setDate(4, birthDateToSql);
+
+			ResultSet rs = pStmt.executeQuery();
+
+			if(!rs.next()) {
+				return null;
+			}
+
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String loginId = rs.getString("login_id");
+				String name = rs.getString("name");
+				Date birth_date = rs.getDate("birth_date");
+				String password = rs.getString("password");
+				String create_date = rs.getString("create_date");
+				String update_date = rs.getString("update_date");
+				User user = new User(id, loginId, name, birth_date, password, create_date, update_date);
+				userList.add(user);
+			}
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			if(conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+					return null;
+				}
+			}
+		}
+		return userList;
+	}
+
+	//更新用のユーザ情報を取得
+	public User UpdateUserInfo(String id) {
+		Connection conn = null;
+
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "SELECT * FROM user WHERE id = ?";
+
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, id);
+			ResultSet rs = pStmt.executeQuery();
+			if(!rs.next()) {
+				return null;
+			}
+			String loginIdData = rs.getString("login_id");
+			String NameData = rs.getString("name");
+			Date birthDateData = rs.getDate("birth_date");
+			String passwordData = rs.getString("password");
+
+			return new User(loginIdData,NameData,birthDateData,passwordData);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
 	}

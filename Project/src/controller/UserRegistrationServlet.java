@@ -55,17 +55,38 @@ public class UserRegistrationServlet extends HttpServlet {
 
         try {
     		String StringDate = request.getParameter("birthDate");
+
             SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date birthDate = sdFormat.parse(StringDate);
 
     		UserDao userDao = new UserDao();
-    		userDao.userRegistration(loginId, password, name, birthDate);
+
+    		if (loginId.equals("") || password.equals("") || passwordConfirm.equals("")) {
+	    		request.setAttribute("inputEmptyMassage","未入力項目があります。");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
+				dispatcher.forward(request, response);
+				return;
+    		} else if(!(password.equals(passwordConfirm))) {
+    			request.setAttribute("passwordOccupiedMassage","パスワードとパスワード（確認）が異なります。");
+    			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
+    			dispatcher.forward(request, response);
+    			return;
+    		} else if (userDao.userCheck(loginId) == true){
+    			request.setAttribute("duplicatedLoginIdMessage","このユーザIDはすでに使用されています。");
+    			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
+    			dispatcher.forward(request, response);
+    			return;
+    		} else {
+    			userDao.userRegistration(loginId, password, name, birthDate);
+    	        response.sendRedirect("UserListServlet");
+    		}
 
         } catch (ParseException e) {
-            e.printStackTrace();
+			request.setAttribute("dateTypeErrMessage","日付の形式が異なります。「yyyy-mm-dd」形式で入力してください");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
+			dispatcher.forward(request, response);
+			return;
         }
-
-        response.sendRedirect("UserListServlet");
 	}
 
 }

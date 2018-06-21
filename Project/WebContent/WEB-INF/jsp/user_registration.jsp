@@ -17,6 +17,10 @@
     </div>
   </header>
   <div class="main_ttl"><h1>ユーザー新規登録</h1></div>
+  <p class="errMsg">${dateTypeErrMessage}</p>
+  <p class="errMsg">${inputEmptyMassage}</p>
+  <p class="errMsg">${passwordOccupiedMassage}</p>
+  <p class="errMsg">${duplicatedLoginIdMessage}</p>
   <div class="container">
   <form class="loginform form" action="UserRegistrationServlet" method="post">
     <div class="form_info_wrap">

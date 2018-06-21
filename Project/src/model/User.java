@@ -37,6 +37,14 @@ public class User {
 		this.update_date = update_date;
 	}
 
+	//更新用のデータをコンストラクタに保存
+	public User(String loginId,String name,Date birth_date,String password) {
+		this.loginId = loginId;
+		this.name = name;
+		this.birth_date = birth_date;
+		this.password = password;
+	}
+
 	public int getId() {
 		return id;
 	}

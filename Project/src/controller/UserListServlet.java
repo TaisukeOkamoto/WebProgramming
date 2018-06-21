@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -55,8 +58,36 @@ public class UserListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+
+		try {
+		String inputId = request.getParameter("inputId");
+		String inputName = request.getParameter("inputName");
+
+		String birthDateFrom = request.getParameter("birthDateFrom");
+		String birthDateTo = request.getParameter("birthDateTo");
+
+        SimpleDateFormat sdFormatFrom = new SimpleDateFormat("yyyy/MM/dd");
+        Date birthDateFromD = sdFormatFrom.parse(birthDateFrom);
+
+        SimpleDateFormat sdFormatTo = new SimpleDateFormat("yyyy/MM/dd");
+        Date birthDateToD;
+
+		birthDateToD = sdFormatTo.parse(birthDateTo);
+		UserDao userDao = new UserDao();
+
+		//ユーザー検索
+		List<User> userList = userDao.searchUser(inputId,inputName,birthDateFromD,birthDateToD);
+		request.setAttribute("userList", userList);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_list.jsp");
+		dispatcher.forward(request, response);
+		} catch (ParseException e) {
+			request.setAttribute("inputDateErrMessage", "日付の形式が異なります");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_list.jsp");
+			dispatcher.forward(request, response);
+		}
+
+
 	}
 
 }
