@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -26,7 +27,7 @@
       <dl>
         <dt>ログインID</dt><dd class="id"><input name="inputId" type="text" size="30"></dd>
         <dt>ユーザー名</dt><dd class="user"><input name="inputName" type="text" size="30"></dd>
-        <dt>生年月日</dt><dd class="birthyear"><input name="birthDateFrom" type="text" maxlength="10" size="12" placeholder="年/日/月">&nbsp;～&nbsp;<input name="birthDateTo" type="text" maxlength="10" size="12" placeholder="年/日/月"></dd>
+        <dt>生年月日</dt><dd class="birthyear"><input name="birthDateFrom" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd">&nbsp;～&nbsp;<input name="birthDateTo" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd"></dd>
       </dl>
       <p class="errMsg">${inputDateErrMessage}</p>
       <div class="submit"><input type="submit" value="検索"></div>
@@ -42,7 +43,7 @@
           <tr>
             <td>${user.loginId}</td>
             <td>${user.name}</td>
-            <td>${user.birth_date}</td>
+            <td><fmt:formatDate value='${user.birth_date}' pattern='yyyy年MM月dd日'/></td>
             <td>
               <span class="edit">
                 <a class="detail" href="UserDetailServlet?id=${user.id}">詳細</a>
@@ -50,7 +51,7 @@
                 <a class="update" href="UserUpdateServlet?id=${user.id}">更新</a>
                 </c:if>
                 <c:if test="${userInfo.loginId.equals('admin')}">
-                <a class="delete">削除</a>
+                <a class="delete" href="UserDeleteServlet?id=${user.id}">削除</a>
                 </c:if>
               </span>
             </td>

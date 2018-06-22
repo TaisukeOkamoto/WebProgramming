@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -17,15 +18,18 @@
     </div>
   </header>
   <div class="main_ttl"><h1>ユーザー情報更新</h1></div>
+  <p class="errMsg">${passwordDifferentMessage}${inputEmptyMassage}${dateTypeErrMessage}</p>
   <div class="container">
-  <form class="loginform form" action="index.html" method="post">
+  <form class="loginform form" action="UserUpdateServlet" method="post">
     <div class="form_info_wrap">
+    <input name="id" type="hidden" value="${updateUser.id}">
       <dl>
-        <dt>ログインID</dt><dd>${updateUser.loginId}</dd>
-        <dt>パスワード</dt><dd><input name="password" type="password"></dd>
-        <dt>パスワード（確認）</dt><dd><input name="password" type="password"></dd>
-        <dt>ユーザー名</dt><dd><input name="user" type="text"></dd>
-        <dt>生年月日</dt><dd><input name="birthyear" type="text"></dd>
+        <dt>ログインID</dt><dd>${updateUser.loginId}<input name="loginId" type="hidden" value="${updateUser.loginId}"></dd>
+        <dt>パスワード</dt><dd><input name="passwordInput" type="password"><input name="defaultPassword" type="hidden" value="${updateUser.password}"></dd>
+        <dt>パスワード（確認）</dt><dd><input name="passwordConfirm" type="password"></dd>
+        <dt>ユーザー名</dt>
+        <dd><input name="name" type="text" value="${updateUser.name}"></dd>
+        <dt>生年月日</dt><dd><input name="birthDate" type="text" value="<fmt:formatDate value='${updateUser.birth_date}' pattern='yyyy/MM/dd'/>"></dd>
       </dl>
       <div class="submit"><input type="submit" value="更新"></div>
       <div class="back"><a href="UserListServlet">戻る</a></div>

@@ -1,6 +1,9 @@
 package controller;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,6 +35,7 @@ public class UserUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("userInfo");
 
@@ -43,9 +47,7 @@ public class UserUpdateServlet extends HttpServlet {
 		String id = request.getParameter("id");
 
 		UserDao userdao = new UserDao();
-
-		User updateUser = userdao.UpdateUserInfo(id);
-
+		User updateUser = userdao.getUpdateUserInfo(id);
 		request.setAttribute("updateUser", updateUser);
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_update.jsp");
@@ -56,8 +58,60 @@ public class UserUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		request.setCharacterEncoding("UTF-8");
+		String loginId = request.getParameter("loginId");
+		String defaultPassword = request.getParameter("defaultPassword");
+		String passwordInput = request.getParameter("passwordInput");
+		String passwordConfirm = request.getParameter("passwordConfirm");
+		String name = request.getParameter("name");
+		String birthDateStr = request.getParameter("birthDate");
+
+		String password;
+
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date utilBirthDate;
+
+		try {
+
+				utilBirthDate = sdFormat.parse(birthDateStr);
+
+				String id = request.getParameter("id");
+				UserDao userdao = new UserDao();
+				User updateUser = userdao.getUpdateUserInfo(id);
+				updateUser.setName(name);
+				updateUser.setBirth_date(utilBirthDate);
+				request.setAttribute("updateUser", updateUser);
+
+				if(!(passwordInput.equals(passwordConfirm))) {
+					request.setAttribute("passwordDifferentMessage", "パスワードとパスワード（確認）が異なります。");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_update.jsp");
+					dispatcher.forward(request, response);
+					return;
+				} else if (name.equals("") || birthDateStr.equals("")) {
+					request.setAttribute("inputEmptyMassage", "未入力項目があります。");
+					RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_update.jsp");
+					dispatcher.forward(request, response);
+					return;
+				} else if(passwordInput.equals("")) {
+					password = defaultPassword;
+				} else {
+					password = passwordInput;
+				}
+				userdao.setUpdateUserInfo(loginId, password, name, utilBirthDate);
+				response.sendRedirect("UserListServlet");
+		} catch (ParseException e) {
+			request.setAttribute("dateTypeErrMessage", "日付の形式が異なります。「yyyy/mm/dd」形式で入力してください。");
+			String id = request.getParameter("id");
+			UserDao userdao = new UserDao();
+			User updateUser = userdao.getUpdateUserInfo(id);
+			updateUser.setName(name);
+			updateUser.setBirth_date(null);
+			request.setAttribute("updateUser", updateUser);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_update.jsp");
+			dispatcher.forward(request, response);
+			return;
+		}
+
 	}
 
 }

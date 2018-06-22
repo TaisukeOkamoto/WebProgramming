@@ -59,6 +59,8 @@ public class UserListServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		request.setCharacterEncoding("UTF-8");
+
 		try {
 		String inputId = request.getParameter("inputId");
 		String inputName = request.getParameter("inputName");

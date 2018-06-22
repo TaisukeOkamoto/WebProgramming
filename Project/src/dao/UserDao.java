@@ -109,13 +109,14 @@ public class UserDao {
 			if(!rs.next()) {
 				return null;
 			}
+			int idData = rs.getInt("id");
 			String loginIdData = rs.getString("login_id");
 			String nameData = rs.getString("name");
 			Date birthDateData = rs.getDate("birth_date");
 			String createDateData = rs.getString("create_date");
 			String updateDteData = rs.getString("update_date");
 
-			return new User(loginIdData,nameData,birthDateData,createDateData,updateDteData);
+			return new User(idData,loginIdData,nameData,birthDateData,createDateData,updateDteData);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -268,7 +269,7 @@ public class UserDao {
 	}
 
 	//更新用のユーザ情報を取得
-	public User UpdateUserInfo(String id) {
+	public User getUpdateUserInfo(String id) {
 		Connection conn = null;
 
 		try {
@@ -282,12 +283,13 @@ public class UserDao {
 			if(!rs.next()) {
 				return null;
 			}
+			int idData = rs.getInt("id");
 			String loginIdData = rs.getString("login_id");
 			String NameData = rs.getString("name");
 			Date birthDateData = rs.getDate("birth_date");
 			String passwordData = rs.getString("password");
 
-			return new User(loginIdData,NameData,birthDateData,passwordData);
+			return new User(idData,loginIdData,NameData,birthDateData,passwordData);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -300,6 +302,71 @@ public class UserDao {
 			} catch(SQLException e) {
 				e.printStackTrace();
 				return null;
+			}
+		}
+	}
+	//ユーザ情報更新処理
+	public void setUpdateUserInfo(String loginId,String password,String name,Date birthDate) {
+		Connection conn = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "UPDATE user SET password = ?,name = ?, birth_date = ?,update_date = ? WHERE login_id = ?";
+
+		    java.sql.Date sqlDate = new java.sql.Date(birthDate.getTime());
+
+			//ハッシュ生成前にバイト配列に置き換える際のCharset
+			Charset charset = StandardCharsets.UTF_8;
+			//ハッシュアルゴリズム
+			String algorithm = "MD5";
+
+			//ハッシュ生成処理
+			byte[] bytes;
+
+			bytes = MessageDigest.getInstance(algorithm).digest(password.getBytes(charset));
+			String encryptedPassword = DatatypeConverter.printHexBinary(bytes);
+
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, encryptedPassword);
+			pStmt.setString(2, name);
+			pStmt.setDate(3,sqlDate);
+			Date utilNow = new Date();
+			java.sql.Timestamp sqlNow = new java.sql.Timestamp(utilNow.getTime());
+			pStmt.setTimestamp(4,sqlNow);
+			pStmt.setString(5, loginId);
+			pStmt.executeUpdate();
+		} catch(SQLException | NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	//ユーザ削除
+	public void userDelete(String id) {
+		Connection conn = null;
+		try {
+			conn = DBManager.getConnection();
+
+			String sql = "DELETE FROM user WHERE id = ?";
+
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, id);
+			pStmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
 			}
 		}
 	}

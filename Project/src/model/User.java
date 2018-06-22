@@ -18,7 +18,8 @@ public class User {
 	}
 
 	//ユーザ情報詳細をコンストラクタに保存
-	public User(String loginId,String name,Date birth_date,String create_date,String update_date) {
+	public User(int id,String loginId,String name,Date birth_date,String create_date,String update_date) {
+		this.id = id;
 		this.loginId = loginId;
 		this.name = name;
 		this.birth_date = birth_date;
@@ -38,7 +39,8 @@ public class User {
 	}
 
 	//更新用のデータをコンストラクタに保存
-	public User(String loginId,String name,Date birth_date,String password) {
+	public User(int id,String loginId,String name,Date birth_date,String password) {
+		this.id = id;
 		this.loginId = loginId;
 		this.name = name;
 		this.birth_date = birth_date;

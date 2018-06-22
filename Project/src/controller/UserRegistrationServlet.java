@@ -48,6 +48,8 @@ public class UserRegistrationServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		request.setCharacterEncoding("UTF-8");
+
 		String loginId = request.getParameter("id");
 		String password = request.getParameter("password");
 		String passwordConfirm = request.getParameter("passwordConfirm");
@@ -56,10 +58,14 @@ public class UserRegistrationServlet extends HttpServlet {
         try {
     		String StringDate = request.getParameter("birthDate");
 
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date birthDate = sdFormat.parse(StringDate);
 
     		UserDao userDao = new UserDao();
+
+    		request.setAttribute("loginId", loginId);
+    		request.setAttribute("name", name);
+    		request.setAttribute("birthDate", birthDate);
 
     		if (loginId.equals("") || password.equals("") || passwordConfirm.equals("")) {
 	    		request.setAttribute("inputEmptyMassage","未入力項目があります。");
@@ -82,7 +88,9 @@ public class UserRegistrationServlet extends HttpServlet {
     		}
 
         } catch (ParseException e) {
-			request.setAttribute("dateTypeErrMessage","日付の形式が異なります。「yyyy-mm-dd」形式で入力してください");
+			request.setAttribute("dateTypeErrMessage","日付の形式が異なります。「yyyy/mm/dd」形式で入力してください");
+    		request.setAttribute("loginId", loginId);
+    		request.setAttribute("name", name);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
 			dispatcher.forward(request, response);
 			return;

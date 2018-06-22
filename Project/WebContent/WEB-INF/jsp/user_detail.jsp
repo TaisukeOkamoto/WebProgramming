@@ -22,11 +22,11 @@
       <div class="user_info">
         <div class="user_info_inner">
           <dl>
-            <dt>ログインID</dt><dd>${user.loginId}</dd>
-            <dt>ユーザー名</dt><dd>${user.name}</dd>
-            <dt>生年月日</dt><dd>${user.birth_date}</dd>
-            <dt>登録日時</dt><dd>${user.create_date}</dd>
-            <dt>更新日時</dt><dd>${user.update_date}</dd>
+            <dt>ログインID</dt><dd>${userDetail.loginId}</dd>
+            <dt>ユーザー名</dt><dd>${userDetail.name}</dd>
+            <dt>生年月日</dt><dd>${userDetail.birth_date}</dd>
+            <dt>登録日時</dt><dd>${userDetail.create_date}</dd>
+            <dt>更新日時</dt><dd>${userDetail.update_date}</dd>
           </dl><br>
               <div class="back"><a href="UserListServlet">戻る</a></div>
         </div>

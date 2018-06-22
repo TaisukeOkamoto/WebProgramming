@@ -11,26 +11,24 @@
   <header>
     <div class="page_body">
       <div class="user_area">
-        <span><a>●●●●さん</a><a>ログアウト</a></span>
+        <span><a>${userInfo.name}さん</a><a href="LogoutServlet">ログアウト</a></span>
       </div>
     </div>
   </header>
-  <div class="main_ttl"><h1>ユーザー情報詳細参照</h1></div>
+  <div class="main_ttl"><h1>ユーザー削除確認</h1></div>
   <div class="container">
     <div class="page_body">
-      <div class="user_info">
-        <div class="user_info_inner">
-          <dl>
-            <dt>ログインID</dt><dd>id0001</dd>
-            <dt>ユーザー名</dt><dd>田中太郎</dd>
-            <dt>生年月日</dt><dd>1989年04月26日</dd>
-            <dt>登録日時</dt><dd>2017年01月01日</dd>
-            <dt>更新日時</dt><dd>2017年02月01日</dd>
-          </dl><br>
-              <div class="back"><a href="">戻る</a></div>
+      <div class="confirm_txt">
+        <p>ログインID：${userDetail.loginId}<br>を本当に削除してよろしいでしょうか。</p>
+      </div>
+      <form class="confirm" action="UserDeleteServlet" method="post">
+        <div class="submit">
+          <input name="id" type="hidden" value="${userDetail.id}">
+          <input name="cancel" type="submit" value="キャンセル" class="cancel">
+          <input name="delete" type="submit" value="OK" class="ok">
         </div>
+      </form>
       </div>
     </div>
-  </div>
 </body>
 </html>
