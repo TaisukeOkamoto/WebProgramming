@@ -74,7 +74,6 @@ public class LoginServlet extends HttpServlet {
 			response.sendRedirect("UserListServlet");
 
 		} catch (NoSuchAlgorithmException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 	}
