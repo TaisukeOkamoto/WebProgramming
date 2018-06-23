@@ -60,19 +60,15 @@ public class UserUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String loginId = request.getParameter("loginId");
-		String defaultPassword = request.getParameter("defaultPassword");
 		String passwordInput = request.getParameter("passwordInput");
 		String passwordConfirm = request.getParameter("passwordConfirm");
 		String name = request.getParameter("name");
 		String birthDateStr = request.getParameter("birthDate");
 
-		String password;
-
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date utilBirthDate;
 
 		try {
-
 				utilBirthDate = sdFormat.parse(birthDateStr);
 
 				String id = request.getParameter("id");
@@ -93,11 +89,11 @@ public class UserUpdateServlet extends HttpServlet {
 					dispatcher.forward(request, response);
 					return;
 				} else if(passwordInput.equals("")) {
-					password = defaultPassword;
-				} else {
-					password = passwordInput;
+					userdao.setUpdateUserInfo(loginId, name, utilBirthDate);
+					response.sendRedirect("UserListServlet");
+					return;
 				}
-				userdao.setUpdateUserInfo(loginId, password, name, utilBirthDate);
+				userdao.setUpdateUserInfo(loginId, passwordInput, name, utilBirthDate);
 				response.sendRedirect("UserListServlet");
 		} catch (ParseException e) {
 			request.setAttribute("dateTypeErrMessage", "日付の形式が異なります。「yyyy/mm/dd」形式で入力してください。");

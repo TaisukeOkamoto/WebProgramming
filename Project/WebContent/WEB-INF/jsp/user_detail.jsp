@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,9 +25,17 @@
           <dl>
             <dt>ログインID</dt><dd>${userDetail.loginId}</dd>
             <dt>ユーザー名</dt><dd>${userDetail.name}</dd>
-            <dt>生年月日</dt><dd>${userDetail.birth_date}</dd>
-            <dt>登録日時</dt><dd>${userDetail.create_date}</dd>
-            <dt>更新日時</dt><dd>${userDetail.update_date}</dd>
+            <dt>生年月日</dt><dd><fmt:formatDate value="${userDetail.birth_date}" pattern="yyyy年MM月dd日"/></dd>
+            <dt>登録日時</dt>
+            <dd>
+            <fmt:parseDate value="${userDetail.create_date}" pattern="yyyy-MM-dd HH:mm:ss" parseLocale="en_GB" var="create_date" />
+            <fmt:formatDate value="${create_date}" pattern="yyyy年MM月dd日 HH:mm:ss"/>
+            </dd>
+            <dt>更新日時</dt>
+            <dd>
+            <fmt:parseDate value="${userDetail.update_date}" pattern="yyyy-MM-dd HH:mm:ss" parseLocale="en_GB" var="update_date" />
+            <fmt:formatDate value="${update_date}" pattern="yyyy年MM月dd日 HH:mm:ss"/>
+            </dd>
           </dl><br>
               <div class="back"><a href="UserListServlet">戻る</a></div>
         </div>

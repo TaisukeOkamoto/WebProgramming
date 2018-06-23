@@ -25,7 +25,7 @@
     <input name="id" type="hidden" value="${updateUser.id}">
       <dl>
         <dt>ログインID</dt><dd>${updateUser.loginId}<input name="loginId" type="hidden" value="${updateUser.loginId}"></dd>
-        <dt>パスワード</dt><dd><input name="passwordInput" type="password"><input name="defaultPassword" type="hidden" value="${updateUser.password}"></dd>
+        <dt>パスワード</dt><dd><input name="passwordInput" type="password"></dd>
         <dt>パスワード（確認）</dt><dd><input name="passwordConfirm" type="password"></dd>
         <dt>ユーザー名</dt>
         <dd><input name="name" type="text" value="${updateUser.name}"></dd>

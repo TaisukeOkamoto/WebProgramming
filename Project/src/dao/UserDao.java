@@ -305,7 +305,7 @@ public class UserDao {
 			}
 		}
 	}
-	//ユーザ情報更新処理
+	//ユーザ情報更新処理（パスワードが入力されたとき）
 	public void setUpdateUserInfo(String loginId,String password,String name,Date birthDate) {
 		Connection conn = null;
 		try {
@@ -346,6 +346,36 @@ public class UserDao {
 			}
 		}
 	}
+	//ユーザ情報更新処理（パスワードが空欄のとき）
+	public void setUpdateUserInfo(String loginId,String name,Date birthDate) {
+		Connection conn = null;
+		try {
+			conn = DBManager.getConnection();
+			String sql = "UPDATE user SET name = ?, birth_date = ?,update_date = ? WHERE login_id = ?";
+
+		    java.sql.Date sqlDate = new java.sql.Date(birthDate.getTime());;
+
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, name);
+			pStmt.setDate(2,sqlDate);
+			Date utilNow = new Date();
+			java.sql.Timestamp sqlNow = new java.sql.Timestamp(utilNow.getTime());
+			pStmt.setTimestamp(3,sqlNow);
+			pStmt.setString(4, loginId);
+			pStmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 	//ユーザ削除
 	public void userDelete(String id) {
