@@ -67,7 +67,7 @@ public class UserRegistrationServlet extends HttpServlet {
     		request.setAttribute("name", name);
     		request.setAttribute("birthDate", birthDate);
 
-    		if (loginId.equals("") || password.equals("") || passwordConfirm.equals("")) {
+    		if (loginId.equals("") || password.equals("") || passwordConfirm.equals("") || name.equals("")) {
 	    		request.setAttribute("inputEmptyMassage","未入力項目があります。");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_registration.jsp");
 				dispatcher.forward(request, response);

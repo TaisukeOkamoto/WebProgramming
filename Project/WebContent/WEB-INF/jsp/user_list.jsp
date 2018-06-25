@@ -20,7 +20,9 @@
   <div class="main_ttl"><h1>ユーザ一覧</h1></div>
   <div class="container">
     <div class="page_body">
+      <c:if test="${userInfo.loginId.equals('admin')}">
       <div class="new_register"><a href="UserRegistrationServlet">新規登録</a></div>
+      </c:if>
     </div>
   <form class="loginform form" action="UserListServlet" method="post">
     <div class="form_info_wrap">
