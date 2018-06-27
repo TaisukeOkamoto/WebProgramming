@@ -60,31 +60,39 @@ public class UserListServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
-
-		try {
 		String inputId = request.getParameter("inputId");
 		String inputName = request.getParameter("inputName");
 
 		String birthDateFrom = request.getParameter("birthDateFrom");
 		String birthDateTo = request.getParameter("birthDateTo");
 
-        SimpleDateFormat sdFormatFrom = new SimpleDateFormat("yyyy/MM/dd");
-        Date birthDateFromD = sdFormatFrom.parse(birthDateFrom);
+		Date birthDateFromD = null;
+		Date birthDateToD = null;
 
-        SimpleDateFormat sdFormatTo = new SimpleDateFormat("yyyy/MM/dd");
-        Date birthDateToD;
+		try {
+			if(!(birthDateFrom.equals("") && birthDateTo.equals(""))) {
+		        SimpleDateFormat sdFormatFrom = new SimpleDateFormat("yyyy/MM/dd");
+		        birthDateFromD = sdFormatFrom.parse(birthDateFrom);
 
-		birthDateToD = sdFormatTo.parse(birthDateTo);
-		UserDao userDao = new UserDao();
+		        SimpleDateFormat sdFormatTo = new SimpleDateFormat("yyyy/MM/dd");
+				birthDateToD = sdFormatTo.parse(birthDateTo);
+			}
+			UserDao userDao = new UserDao();
 
-		//ユーザー検索
-		List<User> userList = userDao.searchUser(inputId,inputName,birthDateFromD,birthDateToD);
-		request.setAttribute("userList", userList);
+			//ユーザー検索
+			List<User> userList = userDao.searchUser(inputId,inputName,birthDateFromD,birthDateToD);
+			request.setAttribute("userList", userList);
+			request.setAttribute("inputId", inputId);
+			request.setAttribute("inputName", inputName);
+			request.setAttribute("birthDateFrom", birthDateFrom);
+			request.setAttribute("birthDateTo", birthDateTo);
 
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_list.jsp");
-		dispatcher.forward(request, response);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_list.jsp");
+			dispatcher.forward(request, response);
 		} catch (ParseException e) {
-			request.setAttribute("inputDateErrMessage", "日付の形式が異なります");
+			request.setAttribute("inputDateErrMessage", "日付の形式が異なります");;
+			request.setAttribute("inputId", inputId);
+			request.setAttribute("inputName", inputName);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_list.jsp");
 			dispatcher.forward(request, response);
 		}

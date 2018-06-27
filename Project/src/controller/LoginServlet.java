@@ -34,6 +34,15 @@ public class LoginServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("userInfo");
+
+		if(user != null) {
+			response.sendRedirect("UserListServlet");
+			return;
+		}
+
 		RequestDispatcher Dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/user_login.jsp");
 		Dispatcher.forward(request, response);
 	}

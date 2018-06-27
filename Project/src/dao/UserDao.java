@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -132,6 +133,7 @@ public class UserDao {
 		}
 	}
 
+	//新規登録
 	public void userRegistration(String loginId,String password,String name,Date birthDate) {
 		Connection conn = null;
 		try {
@@ -176,7 +178,7 @@ public class UserDao {
 			}
 		}
 	}
-
+	//ログインIDがすでにあればtrueを返す
 	public Boolean userCheck(String loginId) {
 		Connection conn = null;
 
@@ -222,22 +224,40 @@ public class UserDao {
 		List<User> userList = new ArrayList<User>();
 		try {
 			conn = DBManager.getConnection();
-			String sql = "SELECT * FROM user WHERE login_id = ? OR name like ? OR birth_date BETWEEN ? AND ?";
+//			String sql = "SELECT * FROM user WHERE (login_id = ? AND name like ?) AND (birth_date BETWEEN ? AND ?)";
+			String sql = "SELECT * FROM user WHERE login_id not in ('admin')";
 
-			java.sql.Date birthDateFromSql = new java.sql.Date(birthDateFrom.getTime());
-			java.sql.Date birthDateToSql = new java.sql.Date(birthDateTo.getTime());
-
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setString(1, inputId);
-			pStmt.setString(2, "%" +inputName+ "%");
-			pStmt.setDate(3, birthDateFromSql);
-			pStmt.setDate(4, birthDateToSql);
-
-			ResultSet rs = pStmt.executeQuery();
-
-			if(!rs.next()) {
-				return null;
+			if(!inputId.equals("")) {
+				sql += " AND login_id = '" + inputId + "'";
 			}
+
+			if(!inputName.equals("")) {
+				sql += " AND name like '" + "%" + inputName + "%"+ "'";
+			}
+
+			if(birthDateFrom != null && birthDateTo != null) {
+				String strBirthDateFrom = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(birthDateFrom);
+				String strBirthDateTo = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(birthDateTo);
+
+				if(!(strBirthDateFrom.equals("") || strBirthDateTo.equals(""))) {
+					java.sql.Date birthDateFromSql = new java.sql.Date(birthDateFrom.getTime());
+					java.sql.Date birthDateToSql = new java.sql.Date(birthDateTo.getTime());
+					sql += " AND birth_date BETWEEN '" + birthDateFromSql + "' AND '" + birthDateToSql + "'";
+				}
+			}
+
+
+//			PreparedStatement pStmt = conn.prepareStatement(sql);
+//			pStmt.setString(1, inputId);
+//			pStmt.setString(2, "%" +inputName+ "%");
+//			pStmt.setDate(3, birthDateFromSql);
+//			pStmt.setDate(4, birthDateToSql);
+
+//			ResultSet rs = pStmt.executeQuery();
+
+			Statement Stmt = conn.createStatement();
+
+			ResultSet rs = Stmt.executeQuery(sql);
 
 			while(rs.next()) {
 				int id = rs.getInt("id");

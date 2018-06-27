@@ -27,9 +27,9 @@
   <form class="loginform form" action="UserListServlet" method="post">
     <div class="form_info_wrap">
       <dl>
-        <dt>ログインID</dt><dd class="id"><input name="inputId" type="text" size="30"></dd>
-        <dt>ユーザー名</dt><dd class="user"><input name="inputName" type="text" size="30"></dd>
-        <dt>生年月日</dt><dd class="birthyear"><input name="birthDateFrom" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd">&nbsp;～&nbsp;<input name="birthDateTo" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd"></dd>
+        <dt>ログインID</dt><dd class="id"><input name="inputId" type="text" size="30" value="${inputId}"></dd>
+        <dt>ユーザー名</dt><dd class="user"><input name="inputName" type="text" size="30" value="${inputName}"></dd>
+        <dt>生年月日</dt><dd class="birthyear"><input name="birthDateFrom" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd" value="${birthDateFrom}">&nbsp;～&nbsp;<input name="birthDateTo" type="text" maxlength="10" size="12" placeholder="yyyy/mm/dd" value="${birthDateTo}"></dd>
       </dl>
       <p class="errMsg">${inputDateErrMessage}</p>
       <div class="submit"><input type="submit" value="検索"></div>
